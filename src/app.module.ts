@@ -4,6 +4,8 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { EnvConfigutation } from './config/env.config';
+import { FeatureFlagModule, FeatureFlagService } from 'feature-flags-npm';
+import { ExampleController } from './controller';
 
 @Module({
   imports: [
@@ -12,14 +14,26 @@ import { EnvConfigutation } from './config/env.config';
     }),
 
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname,'..','public'),
+      rootPath: join(__dirname, '..', 'public'),
     }),
 
-    MongooseModule.forRoot(process.env.MONGODB!)
+    MongooseModule.forRoot(process.env.MONGODB!),
+
+    FeatureFlagModule,
   ],
+  controllers: [ExampleController], 
 })
 export class AppModule {
-  constructor() {
+  constructor(private readonly featureFlagService: FeatureFlagService) {
+    this.featureFlagService.configure({
+      environment: process.env.NODE_ENV || 'development',
+      features: {
+        testFeature: true,
+        disabledFeature: false,
+      },
+    });
+
     console.log(process.env);
   }
 }
+
