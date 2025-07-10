@@ -6,6 +6,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { EnvConfigutation } from './config/env.config';
 import { AuthModule } from './auth/auth.module';
 import { SongsModule } from './songs/songs.module';
+import { FeatureFlagModule, FeatureFlagService } from 'feature-flags-npm';
+import { ExampleController } from './libreria/libreria.controller';
 
 
 @Module({
@@ -22,11 +24,23 @@ import { SongsModule } from './songs/songs.module';
 
     AuthModule,
 
-    SongsModule
+    SongsModule,
+
+    FeatureFlagModule,
+
   ],
+  controllers: [ExampleController],
 })
 export class AppModule {
-  constructor() {
+  constructor(private readonly featureFlagService: FeatureFlagService) {
+    this.featureFlagService.configure({
+      environment: process.env.NODE_ENV || 'development',
+      features: {
+        testFeature: true,
+        disabledFeature: false,
+      },
+    });
     console.log(process.env);
+  
   }
 }

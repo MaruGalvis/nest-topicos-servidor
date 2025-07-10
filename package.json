@@ -31,6 +31,7 @@
     "bcrypt": "^6.0.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.2",
+    "feature-flags-npm": "github:jose30a/feature-flags-npm",
     "mongoose": "^8.16.1",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1"
@@ -79,5 +80,12 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
+  },
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "typeRoots": [
+      "node_modules/@types",
+      "node_modules"
+    ]
   }
 }
