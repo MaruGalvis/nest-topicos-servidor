@@ -40,7 +40,5 @@ export class AppModule {
         disabledFeature: false,
       },
     });
-    console.log(process.env);
-  
   }
 }
